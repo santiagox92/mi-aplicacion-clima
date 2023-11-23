@@ -1,0 +1,36 @@
+/* src/components/SearchBar.css */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: start; /* Asegura que los elementos estén alineados al inicio */
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px; /* Ajusta este valor según el tamaño de tu logo */
+  height: auto;
+  margin-right: 15px; /* Espacio entre el logo y la barra de búsqueda */
+}
+
+.search-form {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.search-button {
+  position: absolute;
+  right: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}

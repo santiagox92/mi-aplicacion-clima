@@ -1,23 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importamos Bootstrap para estilos
-
-// Aquí importaremos nuestros componentes personalizados cuando estén listos
-// import WeatherCard from './components/WeatherCard';
-// import SearchBar from './components/SearchBar';
+import React, { useState } from 'react';
+import axios from 'axios';
+import SearchBar from './components/SearchBar';
+import WeatherCard from './components/WeatherCard';
+import ForecastCard from './components/ForecastCard';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 function App() {
-  // Aquí irán los estados y lógica para manejar la data de la API y la búsqueda
+  const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const handleSearch = (city) => {
+    const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+    axios.get(weatherUrl)
+      .then(response => {
+        setWeatherData(response.data);
+        setError(null);
+      })
+      .catch(err => {
+        setError(err);
+        setWeatherData(null);
+      });
+
+    axios.get(forecastUrl)
+      .then(response => {
+        setForecastData(response.data);
+      })
+      .catch(err => {
+        // Manejar errores del pronóstico aquí si es necesario
+      });
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        {/* Acá iría nuestro SearchBar componente */}
-        {/* <SearchBar /> */}
-      </header>
-      <main>
-        {/* Acá irían los WeatherCard componentes, posiblemente en un contenedor de grilla */}
-        {/* <WeatherCard /> */}
-      </main>
+      <SearchBar onSearch={handleSearch} />
+      {error && <div>Error al obtener los datos del clima.</div>}
+      {weatherData && <WeatherCard weatherData={weatherData} />}
+      {forecastData && <ForecastCard forecastData={forecastData} />}
     </div>
   );
 }

@@ -1,0 +1,54 @@
+/* src/components/ForecastCard.css */
+
+.forecast-container {
+    margin-top: 20px;
+  }
+  
+  .forecast-card {
+    background-color: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .forecast-details {
+    margin-left: 15px;
+  }
+  
+  .hourly-forecast {
+    background-color: #f0f0f0; /* Un color de fondo para destacar */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+  
+  .hour-details {
+    /* Estilos para los detalles cada 3 horas */
+  }
+
+  .hour-details .hour-time {
+    font-size: 1.2em; /* Tamaño más grande para la hora */
+    font-weight: bold; /* Hacer la hora en negrita */
+    margin-bottom: 5px; /* Espacio adicional debajo de la hora */
+  }
+
+  .avg-temp {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0.5em 0;
+  }
+
+  .date-temp {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .temp-details {
+    display: flex;
+    flex-direction: column;
+  }
