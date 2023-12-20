@@ -14,6 +14,15 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.AppTitle {
+  text-align: center; /* Centra el título */
+  font-size: 2.5em; /* Tamaño de la fuente */
+  color: #333; /* Color del texto */
+  margin: 20px 0; /* Espacio arriba y abajo del título */
+  font-family: Arial, sans-serif; /* Tipo de fuente */
+  /* Puedes agregar más estilos según tu preferencia */
+}
+
 @media (max-width: 768px) {
   .App {
     max-width: 95%;
