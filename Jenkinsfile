@@ -14,6 +14,9 @@ pipeline {
         }
 
         stage('Deploy to QA') {
+            when {
+                branch 'qa'
+            }
             steps {
                 sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                     sh """
