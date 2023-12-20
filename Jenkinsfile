@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && git pull origin qa && npm install && npm run build'
+                        ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa && sudo npm install && sudo npm run build'
                     """
                 }
             }
