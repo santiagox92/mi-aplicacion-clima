@@ -14,10 +14,10 @@ pipeline {
             }
         }
         stage('Deploy to QA') {
-            when {
+            //when {
                 // Ejecuta este stage solo si los cambios son en la rama 'qa'
-                branch 'qa'
-            }
+                //branch 'qa'
+            //}
             steps {
                 // Utiliza las credenciales SSH para las operaciones en el servidor QA
                 sshagent(credentials: [SSH_CREDENTIALS_ID]) {
