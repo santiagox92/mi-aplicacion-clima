@@ -3,10 +3,18 @@ pipeline {
 
     environment {
         SSH_CREDENTIALS_ID = 'claveQA'
-        def branchName = env.GIT_BRANCH
     }
 
     stages {
+
+        stage('Init') {
+            steps {
+                script {
+                    env.branchName = sh(script: "echo ${env.GIT_BRANCH - 'origin/'}", returnStdout: true).trim()
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 // Obtiene el código de la rama actual
@@ -24,10 +32,10 @@ pipeline {
             steps {
                 script {
 
-                    echo "La rama es: ${branchName}"
+                    echo "La rama es: ${env.branchName}"
 
                     // Comprobar si la rama es 'qa' y ejecutar pasos específicos
-                    if (branchName == 'qa') {
+                    if (env.branchName == 'qa') {
                         // Pasos específicos para la rama 'qa'
                         sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                             sh """
