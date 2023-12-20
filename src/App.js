@@ -37,6 +37,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1 className="AppTitle">Weather App</h1> {}
       <SearchBar onSearch={handleSearch} />
       {error && <div>Error al obtener los datos del clima.</div>}
       {weatherData && <WeatherCard weatherData={weatherData} />}
