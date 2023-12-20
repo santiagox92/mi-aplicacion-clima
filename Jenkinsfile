@@ -11,7 +11,8 @@ pipeline {
                 // Obtiene el código de la rama actual
                 checkout scm
                 script {
-                    echo "La rama actual es: ${env.BRANCH_NAME}"
+                    def branch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+                    echo "La rama actual es: ${branch}"
                 }
             }
         }
