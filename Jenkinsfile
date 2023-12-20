@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SSH_CREDENTIALS_ID = 'claveQA'
+        def branchName = env.GIT_BRANCH - 'origin/'
     }
 
     stages {
@@ -13,11 +14,16 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+            steps {
+                echo "Aqui realiza test"
+            }
+        }
+
         stage('Deploy to QA') {
             steps {
                 script {
-                    // Extraer el nombre de la rama del ref
-                    def branchName = env.GIT_BRANCH - 'origin/'
+
                     echo "La rama es: ${branchName}"
 
                     // Comprobar si la rama es 'qa' y ejecutar pasos específicos
