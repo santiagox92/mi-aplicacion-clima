@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SSH_CREDENTIALS_ID = 'claveQA'
-        def branchName = env.GIT_BRANCH - 'origin/'
+        def branchName = env.GIT_BRANCH
     }
 
     stages {
