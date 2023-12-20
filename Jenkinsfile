@@ -10,6 +10,9 @@ pipeline {
             steps {
                 // Obtiene el código de la rama actual
                 checkout scm
+                script {
+                    echo "La rama actual es: ${env.BRANCH_NAME}"
+                }
             }
         }
 
