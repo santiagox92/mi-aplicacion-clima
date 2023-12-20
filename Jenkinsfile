@@ -11,9 +11,8 @@ pipeline {
                 // Obtiene el código de la rama actual
                 checkout scm
                 script {
-                    env.each { key, value ->
-                        echo "${key}: ${value}"
-                    }
+                    def ref = env.GIT_BRANCH
+                    echo "La rama es: ${ref}"
                 }
             }
         }
