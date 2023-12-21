@@ -2,35 +2,46 @@ pipeline {
     agent any
 
     environment {
-        // ID de las credenciales SSH configuradas en Jenkins
         SSH_CREDENTIALS_ID = 'claveQA'
     }
 
     stages {
+
+        stage('Init') {
+            steps {
+                script {
+                    env.branchName = sh(script: "echo ${env.GIT_BRANCH - 'origin/'}", returnStdout: true).trim()
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 // Obtiene el código de la rama actual
                 checkout scm
             }
         }
-        stage('Deploy to QA') {
-            when {
-                // Ejecuta este stage solo si los cambios son en la rama 'qa'
-                branch 'qa'
-            }
+
+        stage('Run Tests') {
             steps {
-                // Utiliza las credenciales SSH para las operaciones en el servidor QA
-                sshagent(credentials: [SSH_CREDENTIALS_ID]) {
-                    script {
-                        // Comandos SSH para ejecutar en el servidor QA
-                        def deployScript = """
-                            cd /var/www/html/mi-aplicacion-clima
-                            git pull origin qa
-                            npm install
-                            npm run build
-                        """
-                        // Ejecuta el script en el servidor QA
-                        sshCommand remote: [name: 'ambiente-qa', user: 'ubuntu', host: '172.31.43.201'], command: deployScript
+                echo "Aqui realiza test"
+            }
+        }
+
+        stage('Deploy to QA') {
+            steps {
+                script {
+
+                    echo "La rama es: ${env.branchName}"
+
+                    // Comprobar si la rama es 'qa' y ejecutar pasos específicos
+                    if (env.branchName == 'qa') {
+                        // Pasos específicos para la rama 'qa'
+                        sshagent(credentials: [SSH_CREDENTIALS_ID]) {
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa && sudo npm install && sudo npm run build'
+                            """
+                        }
                     }
                 }
             }
