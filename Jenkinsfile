@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     if (env.branchName == 'qa') {
-                        sshagent(credentials: [SSH_CREDENTIALS_ID]) {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
                                 ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
                             '''
@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     if (env.branchName == 'qa') {
-                        sshagent(credentials: [SSH_CREDENTIALS_ID]) {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
                                 ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
                             '''
