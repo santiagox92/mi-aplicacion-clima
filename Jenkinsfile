@@ -38,7 +38,7 @@ pipeline {
                     if (env.branchName == 'main'){
                         sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin main"
                             '''
                         }
                         echo "Cambios descargados de la rama main."
