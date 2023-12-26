@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SSH_CREDENTIALS_ID = 'claveQA'
+        SSH_CREDENTIALS_ID_QA = 'claveQA'
+        SSH_CREDENTIALS_ID_PROD = 'claveQA'
     }
 
     stages {
@@ -19,30 +20,49 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                echo "Código obtenido de la rama QA."
+                echo "Código obtenido de la rama ${env.branchName}."
             }
         }
 
         stage('Download Changes') {
             steps {
                 script {
-                    sshagent(credentials: [SSH_CREDENTIALS_ID]) {
-                        sh """
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa
-                        """
+                    if (env.branchName == 'qa') {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
+                            '''
+                        }
+                        echo "Cambios descargados de la rama qa."
                     }
-                    echo "Cambios descargados de la rama QA."
+                    if (env.branchName == 'main'){
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
+                            '''
+                        }
+                        echo "Cambios descargados de la rama main."
+                    }
                 }
             }
         }
 
-        stage('Install') {
+        stage('Install dependences') {
             steps {
                 script {
-                    sshagent(credentials: [SSH_CREDENTIALS_ID]) {
-                        sh """
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && sudo npm install'
-                        """
+                    if (env.branchName == 'qa') {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
+                            '''
+                        }
+                    }
+                    if (env.branchName == 'main'){
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
+                            '''
+                        }
                     }
                     echo "Dependencias instaladas."
                 }
@@ -59,12 +79,22 @@ pipeline {
         stage('Deploy to QA') {
             steps {
                 script {
-                    sshagent(credentials: [SSH_CREDENTIALS_ID]) {
-                        sh """
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 'cd /var/www/html/mi-aplicacion-clima && sudo npm run build'
-                        """
+                    if (env.branchName == 'qa') {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
+                            '''
+                        }
+                        echo "Despliegue en el entorno de qa completado."
                     }
-                    echo "Despliegue en el entorno de QA completado."
+                    if (env.branchName == 'main'){
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
+                            '''
+                        }
+                        echo "Despliegue en el entorno de main completado."
+                    }
                 }
             }
         }
