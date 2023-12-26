@@ -28,7 +28,8 @@ describe('ForecastCard Component', () => {
   test('should display correct weather condition after clicking a day', async () => {
     const { getByText, findByText } = render(<ForecastCard forecastData={mockForecastData} />);
   
-    const dateElement = getByText('29/4/2022');
+    const dateRegex = /29\/4\/2022|4\/29\/2022/;
+    const dateElement = getByText(dateRegex);
     fireEvent.click(dateElement);
   
     const despejadoElement = await findByText(/Despejado/);
