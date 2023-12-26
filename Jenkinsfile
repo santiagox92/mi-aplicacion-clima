@@ -28,7 +28,7 @@ pipeline {
                 script {
                     sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
+                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
                         '''
                     }
                     echo "Cambios descargados de la rama QA."
@@ -41,7 +41,7 @@ pipeline {
                 script {
                     sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
+                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
                         '''
                     }
                     echo "Dependencias instaladas."
@@ -61,7 +61,7 @@ pipeline {
                 script {
                     sshagent(credentials: [SSH_CREDENTIALS_ID]) {
                         sh '''
-                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.201 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
+                            ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
                         '''
                     }
                     echo "Despliegue en el entorno de QA completado."
