@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SSH_CREDENTIALS_ID_QA = 'claveQA'
-        SSH_CREDENTIALS_ID_PROD = 'claveQA'
+        SSH_CREDENTIALS_ID_PROD = 'clavePROD'
     }
 
     stages {
@@ -47,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Install dependences') {
+        stage('Install Dependences') {
             steps {
                 script {
                     if (env.branchName == 'qa') {
@@ -71,12 +71,28 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo "Aqui realiza test"
-                echo "Ejecutando pruebas unitarias..."
+                script {
+                    if (env.branchName == 'qa') {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
+                            '''
+                        }
+                        echo "Pruebas unitarias ejecutadas en el entorno QA."
+                    }
+                    if (env.branchName == 'main') {
+                        sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
+                            sh '''
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
+                            '''
+                        }
+                        echo "Pruebas unitarias ejecutadas en el entorno de Producción."
+                    }
+                }
             }
         }
 
-        stage('Deploy to QA') {
+        stage('Deploy') {
             steps {
                 script {
                     if (env.branchName == 'qa') {
