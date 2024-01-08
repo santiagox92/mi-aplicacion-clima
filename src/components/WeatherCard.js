@@ -38,7 +38,7 @@ function WeatherCard({ weatherData }) {
 
   return (
     <div className="weather-card">
-      <h2>Clima Actual en {weatherData.name}</h2>
+      <h2>Clima Actual en: {weatherData.name}</h2>
       <div className="weather-info">
         {getWeatherIcon(weatherData.weather[0].main)}
         <div>
