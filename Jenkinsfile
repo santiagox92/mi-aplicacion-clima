@@ -30,10 +30,7 @@ pipeline {
                     if (env.branchName == 'qa') {
                         sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187
-                                "cd /var/www/html/mi-aplicacion-clima &&
-                                sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima
-                                && sudo git pull origin qa"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin qa"
                             '''
                         }
                         echo "Cambios descargados de la rama qa."
@@ -41,10 +38,7 @@ pipeline {
                     if (env.branchName == 'main'){
                         sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186
-                                "cd /var/www/html/mi-aplicacion-clima &&
-                                sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima
-                                && sudo git pull origin main"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo git config --global --add safe.directory /var/www/html/mi-aplicacion-clima && sudo git pull origin main"
                             '''
                         }
                         echo "Cambios descargados de la rama main."
@@ -59,16 +53,14 @@ pipeline {
                     if (env.branchName == 'qa') {
                         sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
                             '''
                         }
                     }
                     if (env.branchName == 'main'){
                         sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm install"
                             '''
                         }
                     }
@@ -83,8 +75,7 @@ pipeline {
                     if (env.branchName == 'qa') {
                         sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
                             '''
                         }
                         echo "Pruebas unitarias y de integración ejecutadas en el entorno QA."
@@ -92,8 +83,7 @@ pipeline {
                     if (env.branchName == 'main') {
                         sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm test -- --watchAll=false"
                             '''
                         }
                         echo "Pruebas unitarias y de integración ejecutadas en el entorno de Producción."
@@ -108,8 +98,7 @@ pipeline {
                     if (env.branchName == 'qa') {
                         sshagent(credentials: [SSH_CREDENTIALS_ID_QA]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.34.187 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
                             '''
                         }
                         echo "Despliegue en el entorno de qa completado."
@@ -117,8 +106,7 @@ pipeline {
                     if (env.branchName == 'main'){
                         sshagent(credentials: [SSH_CREDENTIALS_ID_PROD]) {
                             sh '''
-                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186
-                                "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
+                                ssh -o StrictHostKeyChecking=no ubuntu@172.31.45.186 "cd /var/www/html/mi-aplicacion-clima && sudo npm run build"
                             '''
                         }
                         echo "Despliegue en el entorno de main completado."
