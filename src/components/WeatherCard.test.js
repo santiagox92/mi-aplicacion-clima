@@ -12,7 +12,7 @@ describe('WeatherCard Component', () => {
 
   test('should render weather information', () => {
     const { getByText } = render(<WeatherCard weatherData={mockWeatherData} />);
-    expect(getByText('Clima Actual en Madrid')).toBeInTheDocument();
+    expect(getByText('Clima Actual en: Madrid')).toBeInTheDocument();
     expect(getByText('20.0°C')).toBeInTheDocument();
     expect(getByText('Presión: 1000 hPa')).toBeInTheDocument();
   });
